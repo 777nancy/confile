@@ -1,0 +1,26 @@
+{
+  "DEFAULT": {
+    "default_string": "default_string",
+    "default_int": 1,
+    "default_float": 1.0,
+    "default_date": "1999-12-31"
+  },
+  "test": {
+    "string": "string",
+    "int": 0,
+    "float": 0.0,
+    "date": "2001-01-23",
+    "boolean_true": true,
+    "boolean_false": false,
+    "list": [
+      "a",
+      "b",
+      "c"
+    ],
+    "dict": {
+      "a": 1,
+      "b": 2,
+      "c": 3
+    }
+  }
+}
