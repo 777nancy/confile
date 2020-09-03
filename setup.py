@@ -16,7 +16,7 @@ def _requires_from_file(filename):
 
 setup(
     name='confile',
-    version='1.0',
+    version='1.1',
     url='https://github.com/777nancy/confile',
     author='777nancy',
     author_email='ys.5.mil.7@gmail.com',
