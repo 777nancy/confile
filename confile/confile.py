@@ -4,6 +4,7 @@ import json
 import os
 from abc import ABCMeta
 from abc import abstractmethod
+from typing import Union
 
 import yaml
 
@@ -22,6 +23,9 @@ class NoDatesSafeLoader(yaml.SafeLoader):
 
 
 class BaseConfig(metaclass=ABCMeta):
+    """
+    This is an interface for all config classes.
+    """
 
     @abstractmethod
     def get_property(self, key, *keys):
@@ -33,8 +37,18 @@ class BaseConfig(metaclass=ABCMeta):
 
 
 class IniConfig(BaseConfig):
+    """
+    Class for ini config file.
+    """
 
-    def __init__(self, config_path, encoding=None, default_section='DEFAULT'):
+    def __init__(self, config_path: str, encoding: str = None, default_section: str = 'DEFAULT') -> None:
+        """
+        Initialize attributes for ini config
+
+        :param config_path: ini config file path
+        :param encoding: file encoding
+        :param default_section: default section for ini config file
+        """
         self._default_section = default_section
         self._config_dict = {}
         self._has_default_section = False
@@ -54,8 +68,14 @@ class IniConfig(BaseConfig):
 
             self._config_dict[section] = section_dict
 
-    def get_property(self, section, key=None):
+    def get_property(self, section: str, key: str = None) -> Union[str, list, dict, None]:
+        """
+        Get property from arguments
 
+        :param section:　section
+        :param key: key
+        :return: property
+        """
         section_dict = self._config_dict.get(section)
 
         if key and section_dict is not None:
@@ -68,14 +88,30 @@ class IniConfig(BaseConfig):
         else:
             return section_dict
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
+        """
+        Ini config file to dict
+
+        :return: dict of ini config file contents
+        """
 
         return self._config_dict
 
 
-class SerializedConfig(BaseConfig):
+class JsonOrYamlConfig(BaseConfig):
+    """
+    Super class for Json or Yaml config file class.
+    """
 
-    def __init__(self, config_path, file_type, encoding=None):
+    def __init__(self, config_path: str, file_type: str, encoding: str = None) -> None:
+        """
+        Initialize attributes for json or yaml config
+
+        :param config_path: ini config file path
+        :param file_type: json or yaml(yml)
+        :param encoding: file encoding
+        :raise TypeError: if file_type is not json or yaml(yml)
+        """
         file_type = file_type.lower()
         with open(config_path, encoding=encoding) as fin:
             if file_type == 'json':
@@ -86,7 +122,14 @@ class SerializedConfig(BaseConfig):
             else:
                 raise TypeError('Unknown file type {}'.format(file_type))
 
-    def get_property(self, key, *keys):
+    def get_property(self, key: str, *keys: list) -> Union[str, list, dict, None]:
+        """
+        get property from arguments
+
+        :param key: key
+        :param keys: keys
+        :return: property
+        """
 
         if type(self._config_dict) is list:
             return None
@@ -103,24 +146,45 @@ class SerializedConfig(BaseConfig):
         else:
             return sub_config_dict
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
+        """
+        config file to dict
 
+        :return: dict of config file contents
+        """
         return self._config_dict
 
 
-class JsonConfig(SerializedConfig):
+class JsonConfig(JsonOrYamlConfig):
+    """
+    Class for json config file.
+    """
 
-    def __init__(self, config_path, encoding=None):
+    def __init__(self, config_path: str, encoding: str = None) -> None:
         super().__init__(config_path, 'json', encoding)
 
 
-class YamlConfig(SerializedConfig):
+class YamlConfig(JsonOrYamlConfig):
+    """
+    Class for yaml config file.
+    """
 
-    def __init__(self, config_path, encoding=None):
+    def __init__(self, config_path: str, encoding: str = None) -> None:
         super().__init__(config_path, 'yaml', encoding)
 
 
-def read_config(config_path, file_type=None, encoding=None, default_section=None):
+def read_config(config_path: str, file_type: str = None, encoding: str = None,
+                default_section: str = None) -> Union[IniConfig, JsonConfig, YamlConfig]:
+    """
+    Read config file
+
+    :param config_path: config file path
+    :param file_type: file type of config file
+    :param encoding: encoding
+    :param default_section: default section of ini config file (ini config file only)
+    :return: Config object
+    :raise TypeError: if file_type is not ini or json or yaml(yml)
+    """
     if file_type is None:
         _, ext = os.path.splitext(config_path)
         file_type = ext[1:]

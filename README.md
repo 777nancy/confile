@@ -7,12 +7,14 @@ confile is a simple config file reader.
 
 ## Installation
 
-To install confile. use pip.
+To install confile, use pip.
 ```bash
 pip install confile
 ```
 
 ## Usage
+
+following file is sample config file called `sample.json`.
 
 ```json
 {
@@ -24,6 +26,7 @@ pip install confile
   }
 }
 ```
+
 ```python
 >>> import confile
 
@@ -37,4 +40,7 @@ pip install confile
 
 >>> config.get_property('db')
 {'host': 'localhost', 'port': 5432, 'user': 'user', 'password': 'password'}
+
+>>> config.to_dict()
+{'db': {'host': 'localhost', 'port': 5432, 'user': 'user', 'password': 'password'}}
 ```
