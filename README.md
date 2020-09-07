@@ -44,3 +44,7 @@ following file is sample config file called `sample.json`.
 >>> config.to_dict()
 {'db': {'host': 'localhost', 'port': 5432, 'user': 'user', 'password': 'password'}}
 ```
+
+## Documentation
+
+Confile’s documentation is [here](https://777nancy.github.io/confile/).
