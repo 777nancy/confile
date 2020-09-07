@@ -72,7 +72,7 @@ class IniConfig(BaseConfig):
         """
         Get property from arguments
 
-        :param section:　section
+        :param section: section
         :param key: key
         :return: property
         """
