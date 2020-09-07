@@ -2,7 +2,7 @@
 
 ## Description
 
-confile is a simple config file reader.  
+Confile is a simple config file reader.  
 `ini`, `json` and `yaml` formats are supported.
 
 ## Installation
