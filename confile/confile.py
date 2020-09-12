@@ -138,9 +138,9 @@ class JsonOrYamlConfig(BaseConfig):
 
         if keys and sub_config_dict is not None:
             for k in keys:
-                value = sub_config_dict.get(k)
-                if value is None:
+                if type(sub_config_dict) is not dict or sub_config_dict is None:
                     return None
+                value = sub_config_dict.get(k)
                 sub_config_dict = value
             return sub_config_dict
         else:

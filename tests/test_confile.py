@@ -59,7 +59,7 @@ class TestIniConfig(object):
         assert value is None
 
     def test_get_unknown_key(self):
-        value = self.config.get_property('test', 'known_key')
+        value = self.config.get_property('test', 'unknown_key')
         assert value is None
 
     def test_get_default_section(self):
@@ -121,7 +121,11 @@ class TestJsonConfig(object):
         assert value is None
 
     def test_get_unknown_key(self):
-        value = self.config.get_property('test', 'known_key')
+        value = self.config.get_property('test', 'unknown_key')
+        assert value is None
+
+    def test_get_unknown_key_over_string(self):
+        value = self.config.get_property('test', 'string', 'unknown_key')
         assert value is None
 
 
@@ -177,7 +181,11 @@ class TestYamlConfig(object):
         assert value is None
 
     def test_get_unknown_key(self):
-        value = self.config.get_property('test', 'known_key')
+        value = self.config.get_property('test', 'unknown_key')
+        assert value is None
+
+    def test_get_unknown_key_over_string(self):
+        value = self.config.get_property('test', 'string', 'unknown_key')
         assert value is None
 
 
